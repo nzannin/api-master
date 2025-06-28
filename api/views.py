@@ -30,7 +30,7 @@ def order_list(request):
     """
     View to list all orders.
     """
-    orders = Order.objects.all()
+    orders = Order.objects.prefetch_related('items__product')
     serializer = OrderSerializer(orders, many=True)
     return Response(serializer.data)
 
