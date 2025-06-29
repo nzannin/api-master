@@ -4,35 +4,32 @@ from api.serializers import ProductSerializer, OrderSerializer, OrderItemSeriali
 from api.models import Product, Order, OrderItem
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-
-@api_view(['GET'])
-def product_list(request):
-    """
-    View to list all products.
-    """
-    products = Product.objects.all()
-    serializer = ProductSerializer(products, many=True)
-    return Response(serializer.data)
+from rest_framework import generics
 
 
-@api_view(['GET'])
-def product_detail(request, pk):
+class ProductListAPIView(generics.ListAPIView):
     """
-    View to retrieve a single product by its ID.
+    API view to list all products.
     """
-    product = get_object_or_404(Product, pk=pk)
-    serializer = ProductSerializer(product)
-    return Response(serializer.data)
+    queryset = Product.objects.filter(stock__gt=0)
+    serializer_class = ProductSerializer
 
 
-@api_view(['GET'])
-def order_list(request):
+class ProductDetailAPIView(generics.RetrieveAPIView):
     """
-    View to list all orders.
+    API view to retrieve a single product by its ID.
     """
-    orders = Order.objects.prefetch_related('items__product')
-    serializer = OrderSerializer(orders, many=True)
-    return Response(serializer.data)
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+    lookup_field = 'pk'
+
+
+class OrderListAPIView(generics.ListAPIView):
+    """
+    API view to list all orders.
+    """
+    queryset = Order.objects.prefetch_related('items__product')
+    serializer_class = OrderSerializer
 
 
 @api_view(['GET'])
