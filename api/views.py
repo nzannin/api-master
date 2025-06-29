@@ -32,6 +32,21 @@ class OrderListAPIView(generics.ListAPIView):
     serializer_class = OrderSerializer
 
 
+class UserOrderListAPIView(generics.ListAPIView):
+    """
+    API view to list all orders for a specific user.
+    """
+    queryset = Order.objects.prefetch_related('items__product')
+    serializer_class = OrderSerializer
+    
+    def get_queryset(self):
+        """
+        Override to filter orders by the authenticated user.
+        """
+        qs = super().get_queryset()
+        return qs.filter(user=self.request.user)
+    
+    
 @api_view(['GET'])
 def product_info(request):
     """
