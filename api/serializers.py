@@ -40,7 +40,7 @@ class OrderSerializer(serializers.ModelSerializer):
     items = OrderItemSerializer(many=True, read_only=True)
     total_price = serializers.SerializerMethodField()
     
-    def get_total_price(self, obj):
+    def get_total_price(self, obj) -> float:
         """
         Calculate the total price of the order by summing the subtotals of each item.
         """

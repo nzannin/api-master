@@ -12,7 +12,7 @@ class ProductListCreateAPIView(generics.ListCreateAPIView):
     """
     API view to list all products or create a new product.
     Supports GET and POST methods.
-    Post only administrators
+    Post only by administrators
     """
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
@@ -27,7 +27,9 @@ class ProductListCreateAPIView(generics.ListCreateAPIView):
 
 class ProductDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
     """
-    API view to retrieve a single product by its ID.
+    API view to retrieve a single product by its ID, update it, or delete it.
+    Supports GET, PUT, PATCH, and DELETE methods.
+    PUT, PATCH, and DELETE methods are restricted to administrators.
     """
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
@@ -47,6 +49,7 @@ class OrderListAPIView(generics.ListAPIView):
     """
     queryset = Order.objects.prefetch_related('items__product')
     serializer_class = OrderSerializer
+    permission_classes = [IsAdminUser]
 
 
 class UserOrderListAPIView(generics.ListAPIView):
@@ -65,7 +68,7 @@ class UserOrderListAPIView(generics.ListAPIView):
         return qs.filter(user=self.request.user)
     
 
-class ProductInfoAPIView(APIView):
+class ProductInfoAPIView(generics.ListAPIView):
     """
     API view to get product information, including count and max price.
     """     
