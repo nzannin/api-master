@@ -17,10 +17,20 @@ POST http://127.0.0.1:8000/api/token/ HTTP/1.1
 Content-Type: application/json
 
 {
-    "username": "nzannin",
-    "password": "nzannin"
+    "username": "admin",
+    "password": "test"
 }
 ###
+
+
+POST http://127.0.0.1:8000/api/token/refresh/ HTTP/1.1
+Content-Type: application/json
+
+{
+    "refresh": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1MTgyMTIzNiwiaWF0IjoxNzUxNzM0ODM2LCJqdGkiOiIzOWZlZDRjODA5OTM0MTM0YmNkNTliYTA5YWZlMGI2MiIsInVzZXJfaWQiOjF9.TqSzszofTn9zPRFHQsh_aTRma6_kmNPOYeJrj0WKP88"
+}
+###
+
 
 GET http://127.0.0.1:8000/user-orders/ HTTP/1.1
 Content-Type: application/json
