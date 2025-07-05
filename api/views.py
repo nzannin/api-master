@@ -12,6 +12,7 @@ class ProductListCreateAPIView(generics.ListCreateAPIView):
     """
     API view to list all products or create a new product.
     Supports GET and POST methods.
+    Post only administrators
     """
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
