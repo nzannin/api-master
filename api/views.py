@@ -7,6 +7,7 @@ from rest_framework.permissions import IsAuthenticated, IsAdminUser, AllowAny
 from api.filters import ProductFilter, InStockFilterBackend
 from rest_framework import filters
 from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.pagination import PageNumberPagination
 
 
 
@@ -17,7 +18,7 @@ class ProductListCreateAPIView(generics.ListCreateAPIView):
     Supports GET and POST methods.
     Post only by administrators
     """
-    queryset = Product.objects.all()
+    queryset = Product.objects.order_by('pk')
     serializer_class = ProductSerializer
     filterset_class = ProductFilter
     filter_backends = [
@@ -28,6 +29,16 @@ class ProductListCreateAPIView(generics.ListCreateAPIView):
         ]
     search_fields = ['name', 'description']
     ordering_fields = ['name', 'price', 'stock']
+    pagination_class = PageNumberPagination
+    pagination_class.page_size = 2
+    
+    # to use a diffrente parameter for pagination number just add the following
+    # pagination_class.page_query_param = 'page_number'
+    
+    
+    # if you want the client to be able to manage pagination size just add the following
+    # pagination_class.page_size_query_param = 'size'
+    # pagination_class.max_page_size = 1000
 
     def get_permissions(self):
         self.permission_classes = [AllowAny] 
@@ -59,7 +70,7 @@ class OrderListAPIView(generics.ListAPIView):
     """
     API view to list all orders.
     """
-    queryset = Order.objects.prefetch_related('items__product')
+    queryset = Order.objects.order_by('pk').prefetch_related('items__product')
     serializer_class = OrderSerializer
     permission_classes = [IsAdminUser]
 
