@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     'django_extensions',
     'rest_framework',
     'drf_spectacular',
+    'django_filters',
     'silk',
     'api',
 ]
@@ -123,11 +124,12 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
     ],
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
 }
 
 SPECTACULAR_SETTINGS = {
-    'TITLE': 'On-line store API',
-    'DESCRIPTION': 'API for the On-line mega store',
+    'TITLE': 'e-commerce API',
+    'DESCRIPTION': 'API for the e-commerce platform',
     'VERSION': '1.0.0',
     'SERVE_INCLUDE_SCHEMA': False,
 }
