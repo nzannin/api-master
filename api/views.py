@@ -1,6 +1,7 @@
 from django.db.models import Max
 from api.serializers import ProductSerializer, OrderSerializer, OrderItemSerializer, ProductInfoSerializer
 from api.models import Product, Order, OrderItem
+from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated, IsAdminUser, AllowAny
@@ -29,9 +30,10 @@ class ProductListCreateAPIView(generics.ListCreateAPIView):
         ]
     search_fields = ['name', 'description']
     ordering_fields = ['name', 'price', 'stock']
-    pagination_class = PageNumberPagination
-    pagination_class.page_size = 2
-    
+    # pagination_class = PageNumberPagination
+    # pagination_class.page_size = 2
+   
+
     # to use a diffrente parameter for pagination number just add the following
     # pagination_class.page_query_param = 'page_number'
     
@@ -65,31 +67,44 @@ class ProductDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
             
         return super().get_permissions()
 
+##### commented when introduced viewsets #######
 
-class OrderListAPIView(generics.ListAPIView):
+# class OrderListAPIView(generics.ListAPIView):
+#     """
+#     API view to list all orders.
+#     """
+#     queryset = Order.objects.order_by('pk').prefetch_related('items__product')
+#     serializer_class = OrderSerializer
+#     permission_classes = [IsAdminUser]
+    
+    
+# class UserOrderListAPIView(generics.ListAPIView):
+#     """
+#     API view to list all orders for a specific user.
+#     """
+#     queryset = Order.objects.prefetch_related('items__product')
+#     serializer_class = OrderSerializer
+#     permission_classes = [IsAuthenticated]
+    
+#     def get_queryset(self):
+#         """
+#         Override to filter orders by the authenticated user.
+#         """
+#         qs = super().get_queryset()
+#         return qs.filter(user=self.request.user)
+    
+
+class OrderViewSet(viewsets.ModelViewSet):
     """
-    API view to list all orders.
+    ViewSet to manage orders.
+    Supports listing, retrieving, creating, updating, and deleting orders.
     """
     queryset = Order.objects.order_by('pk').prefetch_related('items__product')
     serializer_class = OrderSerializer
-    permission_classes = [IsAdminUser]
+    permission_classes = [AllowAny]
+    pagination_class = None         # to disable pagination for this viewset
 
 
-class UserOrderListAPIView(generics.ListAPIView):
-    """
-    API view to list all orders for a specific user.
-    """
-    queryset = Order.objects.prefetch_related('items__product')
-    serializer_class = OrderSerializer
-    permission_classes = [IsAuthenticated]
-    
-    def get_queryset(self):
-        """
-        Override to filter orders by the authenticated user.
-        """
-        qs = super().get_queryset()
-        return qs.filter(user=self.request.user)
-    
 
 class ProductInfoAPIView(generics.ListAPIView):
     """
