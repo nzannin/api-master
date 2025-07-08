@@ -55,5 +55,24 @@ Content-Type: application/json
 
 GET http://127.0.0.1:8000/user-orders/ HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzUxNzMzMzAyLCJpYXQiOjE3NTE3MzMwMDIsImp0aSI6ImIwM2E3YzI5NjFhZTRiZTE5YWZhODkyOWI1NDE1YTQyIiwidXNlcl9pZCI6Mn0.NB9h38Jbr4keGAEIRm1qrkuRVOPOvFKRclCobOITCJU
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzUxOTg2MDMzLCJpYXQiOjE3NTE5ODU3MzMsImp0aSI6IjgzMzNiNDY4Y2JjZjQxZWVhMTA2Nzc1OTRjNWZiMDk0IiwidXNlcl9pZCI6Mn0.cjjQo6ZA7NzlbR36zn7RiWhRlkGjlHDdfPiCJCTALis
+###
 
+GET http://127.0.0.1:8000/orders/ HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzUxOTg2MjU0LCJpYXQiOjE3NTE5ODU5NTQsImp0aSI6Ijc1NTdhNTQ4ODFmZjQxNTZiZTE5NjI1ODUzOWJhYWQ0IiwidXNlcl9pZCI6Mn0.KgTFjbdXqFpKFueWje_exDJmU6cY1dUSL7EAWpVEdhU
+###
+
+GET http://127.0.0.1:8000/orders/b88f4d3d-76f6-46d5-8a62-615132383bf1 HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzUxOTg2NjI2LCJpYXQiOjE3NTE5ODYzMjYsImp0aSI6IjQ4ZTg4ODJmYjgxYjQ3ZTg4MzhjMDQ5YzQyYWYxMjQxIiwidXNlcl9pZCI6MX0.xBoONyyTSQE-X1eCT3_wTAKg_DYistcn-ej4idQQn-4
+
+###
+POST http://127.0.0.1:8000/orders/ HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzUxOTg2MjU0LCJpYXQiOjE3NTE5ODU5NTQsImp0aSI6Ijc1NTdhNTQ4ODFmZjQxNTZiZTE5NjI1ODUzOWJhYWQ0IiwidXNlcl9pZCI6Mn0.KgTFjbdXqFpKFueWje_exDJmU6cY1dUSL7EAWpVEdhU
+
+{
+    "user": 2
+}
+###
