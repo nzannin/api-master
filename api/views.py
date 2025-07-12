@@ -8,7 +8,7 @@ from rest_framework.decorators import action
 
 from api.filters import InStockFilterBackend, OrderFilter, ProductFilter
 from api.models import Order, OrderItem, Product
-from api.serializers import (OrderItemSerializer, OrderSerializer,
+from api.serializers import (OrderCreateSerializer, OrderSerializer,
                              ProductInfoSerializer, ProductSerializer)
 
 
@@ -101,9 +101,26 @@ class OrderViewSet(viewsets.ModelViewSet):
     queryset = Order.objects.order_by('pk').prefetch_related('items__product')
     serializer_class = OrderSerializer
     permission_classes = [IsAuthenticated]
-    pagination_class = None         # to disable default pagination for this viewset
+    pagination_class = None         # !!!!!!!! to disable default pagination for this viewset
     filterset_class = OrderFilter
     filter_backends = [DjangoFilterBackend]
+    
+    
+    def perform_create(self, serializer):
+        """
+        Override to set the user to the authenticated user when creating an order.
+        """
+        serializer.save(user=self.request.user)
+        
+    
+    def get_serializer_class(self):
+        """
+        Return the appropriate serializer class based on the request method.
+        """
+        if self.request.method in ['POST', 'PUT', 'PATCH']:
+            return OrderCreateSerializer
+        return OrderSerializer
+    
     
     def get_queryset(self):
         qs = super().get_queryset()
