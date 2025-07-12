@@ -7,9 +7,10 @@ from rest_framework.response import Response
 from rest_framework.decorators import action
 
 from api.filters import InStockFilterBackend, OrderFilter, ProductFilter
-from api.models import Order, OrderItem, Product
+from api.models import Order, OrderItem, Product, User
 from api.serializers import (OrderCreateSerializer, OrderSerializer,
-                             ProductInfoSerializer, ProductSerializer)
+                             ProductInfoSerializer, ProductSerializer,
+                             UserSerializer)
 
 
 class ProductListCreateAPIView(generics.ListCreateAPIView):
@@ -155,4 +156,13 @@ class ProductInfoAPIView(generics.ListAPIView):
         })
         
         return Response(serializer.data)
-    
+
+
+class UserListView(generics.ListAPIView):
+    """
+    API view to list all users.
+    """
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    pagination_class = None  # Disable pagination for this view    
+
