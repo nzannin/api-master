@@ -1,8 +1,8 @@
 openapi: 3.0.3
 info:
-  title: DRF Course API
+  title: e-commerce API
   version: 1.0.0
-  description: API for the DRF Course
+  description: API for the e-commerce platform
 paths:
   /api/token/:
     post:
@@ -61,7 +61,57 @@ paths:
   /orders/:
     get:
       operationId: orders_list
-      description: API view to list all orders.
+      description: |-
+        ViewSet to manage orders.
+        Supports listing, retrieving, creating, updating, and deleting orders.
+      parameters:
+      - in: query
+        name: created_at
+        schema:
+          type: string
+          format: date-time
+      - in: query
+        name: created_at__gt
+        schema:
+          type: string
+          format: date-time
+      - in: query
+        name: created_at__gte
+        schema:
+          type: string
+          format: date-time
+      - in: query
+        name: created_at__lt
+        schema:
+          type: string
+          format: date-time
+      - in: query
+        name: created_at__lte
+        schema:
+          type: string
+          format: date-time
+      - in: query
+        name: created_at__range
+        schema:
+          type: array
+          items:
+            type: string
+            format: date-time
+        description: Multiple values may be separated by commas.
+        explode: false
+        style: form
+      - in: query
+        name: status
+        schema:
+          type: string
+          enum:
+          - Cancelled
+          - Confirmed
+          - Pending
+        description: |-
+          * `Pending` - Pending
+          * `Confirmed` - Confirmed
+          * `Cancelled` - Cancelled
       tags:
       - orders
       security:
@@ -76,10 +126,162 @@ paths:
                 items:
                   $ref: '#/components/schemas/Order'
           description: ''
+    post:
+      operationId: orders_create
+      description: |-
+        ViewSet to manage orders.
+        Supports listing, retrieving, creating, updating, and deleting orders.
+      tags:
+      - orders
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Order'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Order'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Order'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+          description: ''
+  /orders/{order_id}/:
+    get:
+      operationId: orders_retrieve
+      description: |-
+        ViewSet to manage orders.
+        Supports listing, retrieving, creating, updating, and deleting orders.
+      parameters:
+      - in: path
+        name: order_id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this order.
+        required: true
+      tags:
+      - orders
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+          description: ''
+    put:
+      operationId: orders_update
+      description: |-
+        ViewSet to manage orders.
+        Supports listing, retrieving, creating, updating, and deleting orders.
+      parameters:
+      - in: path
+        name: order_id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this order.
+        required: true
+      tags:
+      - orders
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Order'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Order'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Order'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+          description: ''
+    patch:
+      operationId: orders_partial_update
+      description: |-
+        ViewSet to manage orders.
+        Supports listing, retrieving, creating, updating, and deleting orders.
+      parameters:
+      - in: path
+        name: order_id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this order.
+        required: true
+      tags:
+      - orders
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedOrder'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedOrder'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedOrder'
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+          description: ''
+    delete:
+      operationId: orders_destroy
+      description: |-
+        ViewSet to manage orders.
+        Supports listing, retrieving, creating, updating, and deleting orders.
+      parameters:
+      - in: path
+        name: order_id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this order.
+        required: true
+      tags:
+      - orders
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
   /product/{id}/:
     get:
       operationId: product_retrieve
-      description: API view to retrieve a single product by its ID.
+      description: |-
+        API view to retrieve a single product by its ID, update it, or delete it.
+        Supports GET, PUT, PATCH, and DELETE methods.
+        PUT, PATCH, and DELETE methods are restricted to administrators.
       parameters:
       - in: path
         name: id
@@ -101,7 +303,10 @@ paths:
           description: ''
     put:
       operationId: product_update
-      description: API view to retrieve a single product by its ID.
+      description: |-
+        API view to retrieve a single product by its ID, update it, or delete it.
+        Supports GET, PUT, PATCH, and DELETE methods.
+        PUT, PATCH, and DELETE methods are restricted to administrators.
       parameters:
       - in: path
         name: id
@@ -134,7 +339,10 @@ paths:
           description: ''
     patch:
       operationId: product_partial_update
-      description: API view to retrieve a single product by its ID.
+      description: |-
+        API view to retrieve a single product by its ID, update it, or delete it.
+        Supports GET, PUT, PATCH, and DELETE methods.
+        PUT, PATCH, and DELETE methods are restricted to administrators.
       parameters:
       - in: path
         name: id
@@ -166,7 +374,10 @@ paths:
           description: ''
     delete:
       operationId: product_destroy
-      description: API view to retrieve a single product by its ID.
+      description: |-
+        API view to retrieve a single product by its ID, update it, or delete it.
+        Supports GET, PUT, PATCH, and DELETE methods.
+        PUT, PATCH, and DELETE methods are restricted to administrators.
       parameters:
       - in: path
         name: id
@@ -187,7 +398,92 @@ paths:
       description: |-
         API view to list all products or create a new product.
         Supports GET and POST methods.
-        Post only administrators
+        Post only by administrators
+      parameters:
+      - in: query
+        name: name__icontains
+        schema:
+          type: string
+      - in: query
+        name: name__iexact
+        schema:
+          type: string
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - in: query
+        name: price
+        schema:
+          type: number
+      - in: query
+        name: price__gt
+        schema:
+          type: number
+      - in: query
+        name: price__gte
+        schema:
+          type: number
+      - in: query
+        name: price__lt
+        schema:
+          type: number
+      - in: query
+        name: price__lte
+        schema:
+          type: number
+      - in: query
+        name: price__range
+        schema:
+          type: array
+          items:
+            type: number
+        description: Multiple values may be separated by commas.
+        explode: false
+        style: form
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: stock
+        schema:
+          type: integer
+      - in: query
+        name: stock__gt
+        schema:
+          type: integer
+      - in: query
+        name: stock__gte
+        schema:
+          type: integer
+      - in: query
+        name: stock__lt
+        schema:
+          type: integer
+      - in: query
+        name: stock__lte
+        schema:
+          type: integer
+      - in: query
+        name: stock__range
+        schema:
+          type: array
+          items:
+            type: integer
+        description: Multiple values may be separated by commas.
+        explode: false
+        style: form
       tags:
       - products
       security:
@@ -199,16 +495,14 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Product'
+                $ref: '#/components/schemas/PaginatedProductList'
           description: ''
     post:
       operationId: products_create
       description: |-
         API view to list all products or create a new product.
         Supports GET and POST methods.
-        Post only administrators
+        Post only by administrators
       tags:
       - products
       requestBody:
@@ -246,24 +540,6 @@ paths:
       responses:
         '200':
           description: No response body
-  /user-orders/:
-    get:
-      operationId: user_orders_list
-      description: API view to list all orders for a specific user.
-      tags:
-      - user-orders
-      security:
-      - jwtAuth: []
-      - cookieAuth: []
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Order'
-          description: ''
 components:
   schemas:
     Order:
@@ -272,6 +548,7 @@ components:
         order_id:
           type: string
           format: uuid
+          readOnly: true
         user:
           type: integer
         created_at:
@@ -294,6 +571,7 @@ components:
       required:
       - created_at
       - items
+      - order_id
       - total_price
       - user
     OrderItem:
@@ -319,6 +597,55 @@ components:
       - item_subtotal
       - product_name
       - product_price
+    PaginatedProductList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Product'
+    PatchedOrder:
+      type: object
+      properties:
+        order_id:
+          type: string
+          format: uuid
+          readOnly: true
+        user:
+          type: integer
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        status:
+          $ref: '#/components/schemas/StatusEnum'
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderItem'
+          readOnly: true
+        total_price:
+          type: number
+          format: double
+          description: Calculate the total price of the order by summing the subtotals
+            of each item.
+          readOnly: true
     PatchedProduct:
       type: object
       properties:
