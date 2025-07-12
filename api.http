@@ -63,9 +63,9 @@ Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzUxOTg2MjU0LCJpYXQiOjE3NTE5ODU5NTQsImp0aSI6Ijc1NTdhNTQ4ODFmZjQxNTZiZTE5NjI1ODUzOWJhYWQ0IiwidXNlcl9pZCI6Mn0.KgTFjbdXqFpKFueWje_exDJmU6cY1dUSL7EAWpVEdhU
 ###
 
-GET http://127.0.0.1:8000/orders/3e88cccd-2fea-42e2-a74e-7e8e2bd196f7 HTTP/1.1
+GET http://127.0.0.1:8000/orders/a643ab40-c4d5-4a00-b60f-e7052a11cfc6 HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzUyMzQwODU1LCJpYXQiOjE3NTIzNDA1NTUsImp0aSI6ImVmYzM2ZmI1YTgwYzQ0Y2RhNDJlN2U3NmJhYjdmMjhkIiwidXNlcl9pZCI6MX0.vau4xr1AXgSaWGpb7A4PdDKNVc9WCF7caITE6EKtorI
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzUyMzQxODQ4LCJpYXQiOjE3NTIzNDE1NDgsImp0aSI6ImE2ODBmZDViZDlkYTQ5M2M4YzI5MjM1ODI1NTQ2NjI0IiwidXNlcl9pZCI6MX0.6xW2NRca9PER1Z6R2ucEVhM13rlo8qke3HudarHdkWA
 
 ###
 POST http://127.0.0.1:8000/orders/ HTTP/1.1
@@ -104,3 +104,8 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiY
         }
     ]
 }
+
+###
+
+DELETE http://127.0.0.1:8000/orders/a643ab40-c4d5-4a00-b60f-e7052a11cfc6/ HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzUyMzQyNTc1LCJpYXQiOjE3NTIzNDIyNzUsImp0aSI6IjA2ZWY3OWUwYWNkMDQ5ODRhNWE1YTI0MDIyZGM1MzQ5IiwidXNlcl9pZCI6MX0.UGxFmLUX2S8M-4hlitJcBkFNzytamTYK4Ko3ALElc4s
