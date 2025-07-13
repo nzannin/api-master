@@ -1,4 +1,6 @@
 from django.db.models import Max
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters, generics, viewsets
 from rest_framework.pagination import PageNumberPagination
@@ -41,6 +43,19 @@ class ProductListCreateAPIView(generics.ListCreateAPIView):
     # if you want the client to be able to manage pagination size just add the following
     # pagination_class.page_size_query_param = 'size'
     # pagination_class.max_page_size = 1000
+
+    @method_decorator(cache_page(60 * 15, key_prefix='product_list'))  # Cache for 15 minutes
+    def list(self, request, *args, **kwargs):
+        """
+        Handle GET requests to list products.
+        No additional logic is needed here, as the caching decorator handles it.
+        """
+        return super().list(request, *args, **kwargs)
+    
+    def get_queryset(self):
+        import time
+        time.sleep(2)  # Simulate a delay for chaching demonstration purposes
+        return super().get_queryset()
 
     def get_permissions(self):
         self.permission_classes = [AllowAny] 
