@@ -119,6 +119,8 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'api.User'
 
+# REST Framework settings
+# This is used for configuring Django REST Framework (DRF) settings
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [     
         'rest_framework_simplejwt.authentication.JWTAuthentication',
@@ -128,13 +130,31 @@ REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 2,
+    'DEFAULT_THROTTLE_CLASSES': [
+        'rest_framework.throttling.AnonRateThrottle',
+#        'rest_framework.throttling.ScopedRateThrottle',
+#        'rest_framework.throttling.UserRateThrottle',
+        # 'api.throttles.BurstRateThrottle',
+        # 'api.throttles.SustainedRateThrottle'
+    ],
+    'DEFAULT_THROTTLE_RATES': {
+        'anon': '2/minute',  # Anonymous users can make 2 requests per minute
+        'products': '2/minute',  # Authenticated users can make 2 requests per minute for product-related endpoints
+        'orders': '4/minute',  # Authenticated users can make 4 requests
+        # 'burst': '10/minute',  # Authenticated users can make a burst of 10 requests per minute
+        # 'sustained': '15/hour',  # Authenticated users can make a sustained rate of 15 requests per hour
+        # 'user': '3/minute'  # Authenticated users can make 3 requests per minute
+    }
 }
 
+# JWT Authentication settings
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1)
 }
 
+# DRF Spectacular settings
+# This is used for generating OpenAPI schema documentation
 SPECTACULAR_SETTINGS = {
     'TITLE': 'e-commerce API',
     'DESCRIPTION': 'API for the e-commerce platform',
@@ -142,6 +162,9 @@ SPECTACULAR_SETTINGS = {
     'SERVE_INCLUDE_SCHEMA': False,
 }
 
+# Caching settings
+# This is used for caching API responses
+# Ensure you have django-redis installed and configured
 CACHES = {
     'default': {
         'BACKEND': 'django_redis.cache.RedisCache',

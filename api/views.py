@@ -13,6 +13,7 @@ from api.models import Order, OrderItem, Product, User
 from api.serializers import (OrderCreateSerializer, OrderSerializer,
                              ProductInfoSerializer, ProductSerializer,
                              UserSerializer)
+from rest_framework.throttling import ScopedRateThrottle
 
 
 class ProductListCreateAPIView(generics.ListCreateAPIView):
@@ -21,6 +22,9 @@ class ProductListCreateAPIView(generics.ListCreateAPIView):
     Supports GET and POST methods.
     Post only by administrators
     """
+    throttle_scope = 'products'  # This is used for throttling requests to this view
+    throttle_classes = [ScopedRateThrottle] # This allows for scoped throttling based on the 'products' scope
+    
     queryset = Product.objects.order_by('pk')
     serializer_class = ProductSerializer
     filterset_class = ProductFilter
@@ -114,6 +118,9 @@ class OrderViewSet(viewsets.ModelViewSet):
     ViewSet to manage orders.
     Supports listing, retrieving, creating, updating, and deleting orders.
     """
+    throttle_scope = 'orders'   # This is used for throttling requests to this viewset
+    throttle_classes = [ScopedRateThrottle] # This allows for scoped throttling based on the 'orders' scope
+        
     queryset = Order.objects.order_by('pk').prefetch_related('items__product')
     serializer_class = OrderSerializer
     permission_classes = [IsAuthenticated]
