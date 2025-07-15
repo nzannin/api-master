@@ -14,6 +14,7 @@ from api.serializers import (OrderCreateSerializer, OrderSerializer,
                              ProductInfoSerializer, ProductSerializer,
                              UserSerializer)
 from rest_framework.throttling import ScopedRateThrottle
+from api.tasks import send_order_confirmation_email
 
 
 class ProductListCreateAPIView(generics.ListCreateAPIView):
@@ -133,7 +134,10 @@ class OrderViewSet(viewsets.ModelViewSet):
         """
         Override to set the user to the authenticated user when creating an order.
         """
-        serializer.save(user=self.request.user)
+        order = serializer.save(user=self.request.user)
+        # Send an email confirmation after the order is created (Celery task)
+        # This is an asynchronous task to avoid blocking the request/response cycle
+        send_order_confirmation_email.delay(order.order_id, self.request.user.email)
         
     
     def get_serializer_class(self):

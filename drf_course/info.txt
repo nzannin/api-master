@@ -1,0 +1,2 @@
+# To start celery from the CLI prompt
+celery -A drf_course worker --loglevel=INFO
